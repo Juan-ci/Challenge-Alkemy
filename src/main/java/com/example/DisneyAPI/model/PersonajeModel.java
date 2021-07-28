@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "personaje")
-public class Personaje {
+public class PersonajeModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +32,6 @@ public class Personaje {
     @JoinTable(name = "personaje_peliculaserie",
      joinColumns = @JoinColumn(name = "idPersonaje"),
      inverseJoinColumns = @JoinColumn(name = "idpeliculaSerie"))
-    private List<PeliculaSerie> peliculasSeriesAsociadas;
+    private List<PeliculaSerieModel> peliculasSeriesAsociadas;
     
 }

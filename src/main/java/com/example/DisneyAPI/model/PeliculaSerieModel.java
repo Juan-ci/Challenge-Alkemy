@@ -1,13 +1,16 @@
 package com.example.DisneyAPI.model;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "peliculaserie")
-public class PeliculaSerie {
+@Table(name = "pelicula_serie")
+public class PeliculaSerieModel {
+    
+    private static final Long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +29,6 @@ public class PeliculaSerie {
     private int calificacion;
     
     @ManyToMany(mappedBy = "peliculasSeriesAsociadas", fetch = FetchType.LAZY)
-    private List<Personaje> personajesAsociados;
+    private List<PersonajeModel> personajesAsociados;
     
 }
