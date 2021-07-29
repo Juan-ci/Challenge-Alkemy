@@ -32,6 +32,6 @@ public class PersonajeModel {
     @JoinTable(name = "personaje_peliculaserie",
      joinColumns = @JoinColumn(name = "idPersonaje"),
      inverseJoinColumns = @JoinColumn(name = "idpeliculaSerie"))
-    private List<PeliculaSerieModel> peliculasSeriesAsociadas;
+    private List<MovieModel> peliculasSeriesAsociadas;
     
 }

@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "pelicula_serie")
-public class PeliculaSerieModel {
+public class MovieModel {
     
     private static final Long serialVersionUID = 1L;
     
