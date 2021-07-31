@@ -1,7 +1,7 @@
 package com.example.DisneyAPI.controllers;
 
-import com.example.DisneyAPI.models.MovieModel;
-import com.example.DisneyAPI.services.MovieService;
+import com.example.DisneyAPI.models.CharacterModel;
+import com.example.DisneyAPI.services.CharacterService;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,30 +13,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/movies")
-public class MovieController {
+@RequestMapping("/characters")
+public class CharacterController {
     
     @Autowired
-    MovieService movieService;
+    CharacterService characterService;
     
     @GetMapping()
-    public ArrayList<MovieModel> obtenerPeliculaSeries(){
-        return movieService.getMovie();
+    public ArrayList<CharacterModel> getCharacter(){
+        return characterService.getCharacters();
     }
     
     @PostMapping()
-    public MovieModel guardarPeliculaSerie(@RequestBody MovieModel movie){
-        return this.movieService.saveMovie(movie);
+    public CharacterModel guardarPersonaje(@RequestBody CharacterModel character){
+        return this.characterService.saveCharacter(character);
     }
     
     @DeleteMapping( path = "/{id}")
-    public String deleteById(@PathVariable("id") Long id) {
-        boolean borrado = this.movieService.deleteMovie(id);
+    public String borrarPersonajeById(@PathVariable("id") Long id) {
+        boolean borrado = this.characterService.deleteCharacter(id);
         
         if(borrado){
-            return "Se eliminó correctamente la película con id " + id;
+            return "Se eliminó correctamente el personaje con id  " + id;
         } else {
-            return "No pudo eliminar la película con id "+ id;
+            return "No pudo eliminar el personaje con "+ id;
         }
     }
 }

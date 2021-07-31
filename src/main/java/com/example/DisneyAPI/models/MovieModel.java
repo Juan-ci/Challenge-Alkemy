@@ -1,22 +1,20 @@
-package com.example.DisneyAPI.model;
+package com.example.DisneyAPI.models;
 
-import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "pelicula_serie")
+@Table(name = "movie")
 public class MovieModel {
-    
-    private static final Long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idpeliculaSerie;
+    @Column(unique = true)
+    private Long idMovie;
     
-    @Column
+    @Column()
     private String imagen;
     
     @Column
@@ -28,7 +26,7 @@ public class MovieModel {
     @Column
     private int calificacion;
     
-    @ManyToMany(mappedBy = "peliculasSeriesAsociadas", fetch = FetchType.LAZY)
-    private List<PersonajeModel> personajesAsociados;
+    @ManyToMany(mappedBy = "peliculasAsociadas", fetch = FetchType.LAZY)
+    private List<CharacterModel> personajesAsociados;
     
 }
