@@ -18,12 +18,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 @Service
 public class UserService {
-        
-    @Autowired
-    UserDto userDto;
-    
-    @Autowired
-    UserModel userModel;
     
     @Autowired
     IUserRepository userRepository;
@@ -37,13 +31,14 @@ public class UserService {
     public UserDto saveUser(UserDto user){
         UserModel userDevuelto;
         
-        userModel = UserModel.builder()
+        UserModel userModel = UserModel.builder()
                 .userName(user.getUserName())
                 .password(user.getPassword())
                 .role(user.getRole()).build();
         userDevuelto = userRepository.saveAndFlush(userModel);
         
         user.setIdUser(userDevuelto.getIdUser());
+        user.setPassword(null);
         
         return user;
     }

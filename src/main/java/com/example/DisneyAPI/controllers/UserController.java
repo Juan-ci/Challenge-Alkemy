@@ -13,9 +13,6 @@ public class UserController {
     
     @Autowired
     UserService userService;
-    
-    @Autowired
-    UserDto userDto;
     /*
     @PostMapping("/register")
     public UserModel guardarUsario(@RequestBody UserModel user){
