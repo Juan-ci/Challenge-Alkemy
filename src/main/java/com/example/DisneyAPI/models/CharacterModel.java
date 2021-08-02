@@ -1,5 +1,6 @@
 package com.example.DisneyAPI.models;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
@@ -7,7 +8,9 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "disney_character")
-public class CharacterModel {
+public class CharacterModel implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

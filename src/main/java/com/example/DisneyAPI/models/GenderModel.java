@@ -1,12 +1,16 @@
 package com.example.DisneyAPI.models;
 
+import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "gender")
-public class GenderModel {
+public class GenderModel implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +23,6 @@ public class GenderModel {
     @Column(length = 2147483647)
     private String imagen;
     
+    @OneToMany(mappedBy = "genero", cascade = CascadeType.PERSIST)
+    private List<MovieModel> peliculasAsociadas;
 }
