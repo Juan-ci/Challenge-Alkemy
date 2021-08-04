@@ -1,5 +1,6 @@
 package com.example.DisneyAPI.dto;
 
+import com.example.DisneyAPI.models.CharacterModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -29,4 +30,13 @@ public class CharacterDto implements Serializable {
     private String historia;
     
     //private List<MovieModel> peliculasAsociadas;
+    
+    public CharacterModel convertToEntity() {
+        return CharacterModel.builder()
+                .imagen(this.imagen)
+                .nombre(this.nombre)
+                .edad(this.edad)
+                .peso(this.peso)
+                .historia(this.historia).build();
+    }
 }

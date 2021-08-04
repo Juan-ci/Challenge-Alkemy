@@ -1,5 +1,6 @@
 package com.example.DisneyAPI.dto;
 
+import com.example.DisneyAPI.models.UserModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,11 @@ public class UserDto implements Serializable {
     private String role;
     
     private String token;
+    
+    public UserModel convertToEntity() {
+        return UserModel.builder()
+                .userName(this.userName)
+                .password(this.password)
+                .role(this.role).build();
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.DisneyAPI.controllers;
 
+import com.example.DisneyAPI.dto.Credential;
 import com.example.DisneyAPI.dto.UserDto;
 import com.example.DisneyAPI.models.UserModel;
 import com.example.DisneyAPI.services.UserService;
@@ -13,29 +14,16 @@ public class UserController {
     
     @Autowired
     UserService userService;
-    /*
-    @PostMapping("/register")
-    public UserModel guardarUsario(@RequestBody UserModel user){
-        return this.userService.saveUser(user);
-    }
-    */
     
     @PostMapping("/register")
-    public UserDto guardarUsario(@RequestBody UserDto user){
+    public UserDto guardarUsuario(@RequestBody UserDto user){
         return this.userService.saveUser(user);
     }
-        //return this.userService.saveUser(user);
     
     @PostMapping("/login")
-    public UserModel login(@RequestBody UserModel user) {
-		//ToDo: verificar si existe usuario, si existe, chequear password, despues generar token
-		String token = userService.getJWTToken(user.getUserName());
-		//UserModel user = new UserModel();
-		//user.setUser(username);
-		//user.setToken(token);		
-		return user;
-		
-	}
+    public String login(@RequestBody Credential credentials) throws Exception {
+        return userService.logIn(credentials);
+    }
     
     @GetMapping("/users")
     public ArrayList<UserModel> obtenerUsuarios(){

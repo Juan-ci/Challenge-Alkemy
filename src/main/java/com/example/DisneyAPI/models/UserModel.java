@@ -3,14 +3,18 @@ package com.example.DisneyAPI.models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
-import javax.persistence.*;import lombok.Builder;
+import javax.persistence.*;import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "user")
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserModel implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -21,7 +25,7 @@ public class UserModel implements Serializable {
     private Long idUser;
     
     @NotNull
-    @Column
+    @Column(unique = true)
     private String userName;
     
     @NotNull

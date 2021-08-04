@@ -1,5 +1,6 @@
 package com.example.DisneyAPI.controllers;
 
+import com.example.DisneyAPI.dto.CharacterDto;
 import com.example.DisneyAPI.models.CharacterModel;
 import com.example.DisneyAPI.services.CharacterService;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class CharacterController {
     }
     
     @PostMapping()
-    public CharacterModel guardarPersonaje(@RequestBody CharacterModel character){
+    public CharacterDto guardarPersonaje(@RequestBody CharacterDto character){
         return this.characterService.saveCharacter(character);
     }
     
