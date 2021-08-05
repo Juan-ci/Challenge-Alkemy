@@ -1,5 +1,6 @@
 package com.example.DisneyAPI.dto;
 
+import com.example.DisneyAPI.models.GenderModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -21,4 +22,18 @@ public class GenderDto implements Serializable {
     private String nombre;
     
     private String imagen;
+    
+    public static GenderDto converToDto(GenderModel genderEntity) {
+        return GenderDto.builder().idGender(genderEntity.getIdGender())
+                                    .nombre(genderEntity.getNombre())
+                                    .imagen(genderEntity.getImagen())
+                                    .build();
+    }
+    
+    public GenderModel converToEntity() {
+        return GenderModel.builder().idGender(this.idGender)
+                                    .nombre(this.nombre)
+                                    .imagen(this.imagen)
+                                    .build();
+    }
 }

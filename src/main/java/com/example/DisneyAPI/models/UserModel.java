@@ -24,6 +24,16 @@ public class UserModel implements Serializable {
     @Column(unique = true)
     private Long idUser;
     
+    @Column
+    private String name;
+    
+    @Column
+    private String lastName;
+    
+    @NotNull
+    @Column(unique = true)
+    private String mail;
+    
     @NotNull
     @Column(unique = true)
     private String userName;

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.DisneyAPI.Repository.ICharacterRepository;
 import com.example.DisneyAPI.dto.CharacterDto;
+import java.util.List;
 
 @Service
 public class CharacterService {
@@ -15,19 +16,18 @@ public class CharacterService {
     ICharacterRepository characterRepository;
     
     @Transactional(readOnly = true)
-    public ArrayList<CharacterModel> getCharacters(){
+    public List<CharacterDto> getCharacters(){
+        List<CharacterModel> characterBD = characterRepository.findAll();
+        
+        List<CharacterDto> characterDto = new ArrayList();
+        
+        for (CharacterModel characterEnt : characterBD) {
+            characterDto.add(CharacterDto.getImagenNombre(characterEnt));
+        }
         /*
-        *List<UserModel userBD = (ArrayList<CharacterModel>) characterRepository.findAll()
-        
-        List<UserDto> userDto;
-        
-        userBD.map(
-            userDto = UserDto.builder()
-                            .imagen(userBD.getImagen())
-                            .nombre(userBD.getNombre()).build();
-        )
-        */
-        return (ArrayList<CharacterModel>) characterRepository.findAll();
+         *ENTENDER COMO USAR EXPRESION LAMBDA
+         */
+        return characterDto;
     }
     
     @Transactional
@@ -47,4 +47,9 @@ public class CharacterService {
             return false;
         }
     }
+    
+    /*
+     * CREAR METODO PARA BUSQUEDA CON FILTRADO
+     * CriteriaQuery
+     */
 }

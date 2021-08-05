@@ -2,9 +2,8 @@ package com.example.DisneyAPI.controllers;
 
 import com.example.DisneyAPI.dto.Credential;
 import com.example.DisneyAPI.dto.UserDto;
-import com.example.DisneyAPI.models.UserModel;
 import com.example.DisneyAPI.services.UserService;
-import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +25,7 @@ public class UserController {
     }
     
     @GetMapping("/users")
-    public ArrayList<UserModel> obtenerUsuarios(){
-        //ToDo: crear userDTO para que devuelva todo menos el password
+    public List<UserDto> obtenerUsuarios(){
         return userService.getUsers();
     }
     

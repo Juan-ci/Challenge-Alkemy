@@ -1,5 +1,6 @@
 package com.example.DisneyAPI.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MovieModel implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -29,11 +31,12 @@ public class MovieModel implements Serializable {
     @Column
     private String titulo;
     
+    //Modificar a tipo Date para facilitar ordenado desde BD
     @Column
     private String fechaCreacion;
     
     @Column
-    private int calificacion;
+    private Long calificacion;
     
     @ManyToMany(mappedBy = "peliculasAsociadas", fetch = FetchType.LAZY)
     private List<CharacterModel> personajesAsociados;

@@ -16,7 +16,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -28,20 +27,40 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
     
+    @Autowired
+    MailSenderService mailService;
+    
     @Transactional(readOnly = true)
-    public ArrayList<UserModel> getUsers() {
-        return (ArrayList<UserModel>) userRepository.findAll();
+    public List<UserDto> getUsers() {
+        List<UserModel> usersBD = userRepository.findAll();
+        
+        List<UserDto> usersDto = new ArrayList();
+        
+        for (UserModel userEntity : usersBD) {
+            usersDto.add(UserDto.convertToDto(userEntity));
+        }
+        System.out.println("Entidad convertida a Dto con éxito");
+        return usersDto;
     }
 
     @Transactional
     public UserDto saveUser(UserDto user) {
         UserModel userDevuelto;
         
+        /*
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        
+        Revisar chequeo de pass encriptado con el pass ingresado por el login
+        */
         userDevuelto = userRepository.saveAndFlush(user.convertToEntity());
+        
+        /*
+        mailService.sendRegistrationEmail(user); -->Este código ya estaría funcionando, seteando el mail y apiKey en el .properties
+        POR EL MOMENTO ESTÁ COMENTADO, YA QUE TENGO PROBLEMAS EN LA DOBLE AUTENTICACION
+        QUE PIDE SENDGRID
+        */
 
         user.setIdUser(userDevuelto.getIdUser());
+        user.setMail(null);
         user.setPassword(null);
 
         return user;
@@ -52,13 +71,28 @@ public class UserService {
         UserModel userBD = userRepository.findByuserName(credentials.getUserName()).orElseThrow();
 
         if (credentials.getPassword().equals(userBD.getPassword())) {
+            
+            //Con el encoderPass deshabilitado, sólo comparo texto plano ingresado con texto plano en BD
             String token = this.getJWTToken(credentials.getUserName());
-            userBD.setToken(token);
+            System.out.println("¡¡¡TOKEN OBTENIDO!!!");
+            userBD = UserDto.setTokenEntity(token);
             userRepository.saveAndFlush(userBD);
             return token;
         } else {
-            throw new Exception();
+            return "ERROR AQUI";
+            
         }
+            /*
+            String token = this.getJWTToken(credentials.getUserName());
+            System.out.println("¡¡¡TOKEN OBTENIDO!!!");
+            userBD.setToken(token);
+            //userBD = UserDto.setTokenEntity(token);
+            userRepository.saveAndFlush(userBD);
+            return token;
+        } else {
+            throw new Exception("Check the credentials.");
+        }
+*/
     }
 
     @Transactional
@@ -85,7 +119,7 @@ public class UserService {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                //.setExpiration(new Date(System.currentTimeMillis() + 600000))
+                //.setExpiration(new Date(System.currentTimeMillis() + 600000)) <--Expiración comentada para facilitar pruebas
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
 

@@ -30,10 +30,10 @@ public class CharacterModel implements Serializable {
     private String nombre;
     
     @Column
-    private int edad;
+    private Long edad;
     
     @Column
-    private double peso;
+    private Double peso;
     
     @Column
     private String historia;

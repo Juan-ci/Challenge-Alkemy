@@ -23,13 +23,16 @@ public class CharacterDto implements Serializable {
     
     private String nombre;
     
-    private int edad;
+    private Long edad;
     
-    private double peso;
+    private Double peso;
     
     private String historia;
     
-    //private List<MovieModel> peliculasAsociadas;
+    /*
+     * private List<MovieModel> peliculasAsociadas;
+     * AGREGAR CODIGO DE RELACIÓN ENTRE CLASES
+     */
     
     public CharacterModel convertToEntity() {
         return CharacterModel.builder()
@@ -38,5 +41,11 @@ public class CharacterDto implements Serializable {
                 .edad(this.edad)
                 .peso(this.peso)
                 .historia(this.historia).build();
+    }
+    
+    public static CharacterDto getImagenNombre(CharacterModel entity) {
+        return CharacterDto.builder()
+                .imagen(entity.getImagen())
+                .nombre(entity.getNombre()).build();
     }
 }

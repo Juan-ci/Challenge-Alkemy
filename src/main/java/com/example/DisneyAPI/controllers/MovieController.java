@@ -1,8 +1,10 @@
 package com.example.DisneyAPI.controllers;
 
+import com.example.DisneyAPI.dto.MovieDto;
 import com.example.DisneyAPI.models.MovieModel;
 import com.example.DisneyAPI.services.MovieService;
 import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +22,12 @@ public class MovieController {
     MovieService movieService;
     
     @GetMapping()
-    public ArrayList<MovieModel> obtenerPeliculaSeries(){
-        return movieService.getMovie();
+    public List<MovieDto> obtenerPeliculaSeries(){
+        return this.movieService.getMovie();
     }
     
     @PostMapping()
-    public MovieModel guardarPeliculaSerie(@RequestBody MovieModel movie){
+    public MovieDto guardarPeliculaSerie(@RequestBody MovieDto movie){
         return this.movieService.saveMovie(movie);
     }
     

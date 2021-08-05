@@ -1,8 +1,8 @@
 package com.example.DisneyAPI.controllers;
 
-import com.example.DisneyAPI.models.GenderModel;
+import com.example.DisneyAPI.dto.GenderDto;
 import com.example.DisneyAPI.services.GenderService;
-import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,18 +20,18 @@ public class GenderController {
     GenderService genderService;
     
     @GetMapping()
-    public ArrayList<GenderModel> obtenerGeneros(){
-        return (ArrayList<GenderModel>)genderService.findAll();
+    public List<GenderDto> obtenerGeneros(){
+        return this.genderService.getGenders();
     }
     
     @PostMapping()
-    public GenderModel guardarPersonaje(@RequestBody GenderModel character){
+    public GenderDto guardarPersonaje(@RequestBody GenderDto character){
         return this.genderService.saveGender(character);
     }
     
     @DeleteMapping("/{id}")
     public String borrarGenero(@PathVariable("id") Long id){
-       boolean borrar = genderService.delete(id);
+       boolean borrar = this.genderService.delete(id);
        
        if(borrar) {
            return "Se pudo borrar el género con id " + id;

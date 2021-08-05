@@ -1,9 +1,8 @@
 package com.example.DisneyAPI.controllers;
 
 import com.example.DisneyAPI.dto.CharacterDto;
-import com.example.DisneyAPI.models.CharacterModel;
 import com.example.DisneyAPI.services.CharacterService;
-import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,7 @@ public class CharacterController {
     CharacterService characterService;
     
     @GetMapping()
-    public ArrayList<CharacterModel> getCharacter(){
+    public List<CharacterDto> getCharacter(){
         return characterService.getCharacters();
     }
     
