@@ -60,13 +60,11 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>	
-        
         <dependency>
-            <groupId>com.sendgrid</groupId>
-            <artifactId>sendgrid-java</artifactId>
-            <version>4.7.2</version>
+            <groupId>com.mailjet</groupId>
+            <artifactId>mailjet-client</artifactId>
+            <version>5.2.0</version>
         </dependency>
-
     </dependencies>
 
     <build>

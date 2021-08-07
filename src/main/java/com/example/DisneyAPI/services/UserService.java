@@ -4,6 +4,7 @@ import com.example.DisneyAPI.Repository.IUserRepository;
 import com.example.DisneyAPI.dto.Credential;
 import com.example.DisneyAPI.dto.UserDto;
 import com.example.DisneyAPI.models.UserModel;
+import com.mailjet.client.errors.MailjetException;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Service
+@Service("userDetailsService")
 public class UserService {
 
     @Autowired
@@ -44,19 +45,16 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto saveUser(UserDto user) {
+    public UserDto saveUser(UserDto user) throws MailjetException {
         UserModel userDevuelto;
         
-        /*
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        Revisar chequeo de pass encriptado con el pass ingresado por el login
-        */
         userDevuelto = userRepository.saveAndFlush(user.convertToEntity());
         
-        /*
-        mailService.sendRegistrationEmail(user); -->Este código ya estaría funcionando, seteando el mail y apiKey en el .properties
-        POR EL MOMENTO ESTÁ COMENTADO, YA QUE TENGO PROBLEMAS EN LA DOBLE AUTENTICACION
-        QUE PIDE SENDGRID
+        mailService.sendRegistrationEmail(user);
+        /* -->Este código ya estaría funcionando, seteando el mail y apiKey en el .properties
+            POR EL MOMENTO ESTÁ COMENTADO, YA QUE TENGO PROBLEMAS EN LA DOBLE AUTENTICACION
+            QUE PIDE SENDGRID
         */
 
         user.setIdUser(userDevuelto.getIdUser());
@@ -67,32 +65,17 @@ public class UserService {
     }
 
     public String logIn(Credential credentials) throws Exception {
+        UserModel userBD = userRepository.findByUserName(credentials.getUserName());
 
-        UserModel userBD = userRepository.findByuserName(credentials.getUserName()).orElseThrow();
-
-        if (credentials.getPassword().equals(userBD.getPassword())) {
-            
-            //Con el encoderPass deshabilitado, sólo comparo texto plano ingresado con texto plano en BD
+        if (passwordEncoder.matches(credentials.getPassword(), userBD.getPassword())) {
             String token = this.getJWTToken(credentials.getUserName());
             System.out.println("¡¡¡TOKEN OBTENIDO!!!");
             userBD = UserDto.setTokenEntity(token);
             userRepository.saveAndFlush(userBD);
             return token;
         } else {
-            return "ERROR AQUI";
-            
+            throw new Exception("Check the credentials.-- ERROR AQUI!!");
         }
-            /*
-            String token = this.getJWTToken(credentials.getUserName());
-            System.out.println("¡¡¡TOKEN OBTENIDO!!!");
-            userBD.setToken(token);
-            //userBD = UserDto.setTokenEntity(token);
-            userRepository.saveAndFlush(userBD);
-            return token;
-        } else {
-            throw new Exception("Check the credentials.");
-        }
-*/
     }
 
     @Transactional
@@ -123,6 +106,6 @@ public class UserService {
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
 
-        return "Disney " + token;
+        return "Bearer " + token;
     }
 }

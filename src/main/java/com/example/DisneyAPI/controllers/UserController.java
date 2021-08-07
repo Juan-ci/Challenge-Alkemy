@@ -3,6 +3,7 @@ package com.example.DisneyAPI.controllers;
 import com.example.DisneyAPI.dto.Credential;
 import com.example.DisneyAPI.dto.UserDto;
 import com.example.DisneyAPI.services.UserService;
+import com.mailjet.client.errors.MailjetException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class UserController {
     UserService userService;
     
     @PostMapping("/register")
-    public UserDto guardarUsuario(@RequestBody UserDto user){
+    public UserDto guardarUsuario(@RequestBody UserDto user) throws MailjetException {
         return this.userService.saveUser(user);
     }
     
