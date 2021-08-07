@@ -25,10 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                //.antMatchers(HttpMethod.POST, "/auth/**").permitAll() <--Comentado por el momento ya que no puedo verificar pass encriptada
-                .antMatchers(HttpMethod.POST, "/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/**").permitAll();
-                //.anyRequest().authenticated();
+                .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                .anyRequest().authenticated();
     }
-
 }
