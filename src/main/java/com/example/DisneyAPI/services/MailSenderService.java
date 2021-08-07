@@ -15,20 +15,17 @@ public class MailSenderService {
 
     private final String apiKey = "2a349bb2827c55bbd22513dca5c59a50";
     private final String secretKey = "4051ce94b4333a8a5b8632c1887c709a";
-    //@Value("disneyAPI.preaceleración.sendgrid.senderemail")
     private final String senderEmail = "juan.ci.caballero@gmail.com";
     public void sendRegistrationEmail(UserDto user) throws MailjetException {
         MailjetClient client;
         MailjetRequest request;
         MailjetResponse response;
-        //client = new MailjetClient("2a349bb2827c55bbd22513dca5c59a50", "4051ce94b4333a8a5b8632c1887c709a");
         client = new MailjetClient(apiKey, secretKey);
         request = new MailjetRequest(Emailv31.resource)
                 .property(Emailv31.MESSAGES, new JSONArray()
                         .put(new JSONObject()
                                 .put(Emailv31.Message.FROM, new JSONObject()
-                                        //.put("Email", "juan.ci.caballero@gmail.com")  //cambiar por variable
-                                        .put("Email", senderEmail)  //cambiar por variable
+                                        .put("Email", senderEmail)
                                         .put("Name", "Juan"))
                                 .put(Emailv31.Message.TO, new JSONArray()
                                         .put(new JSONObject()
