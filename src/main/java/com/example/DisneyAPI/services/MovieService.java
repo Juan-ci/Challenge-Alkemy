@@ -63,6 +63,7 @@ public class MovieService {
                     .titulo(movie.getTitulo())
                     .fechaCreacion(movie.getFechaCreacion())
                     .calificacion(movie.getCalificacion())
+                    .genero(movie.getGenero())
                     //.personajesAsociados(movie.getPersonajesAsociados())
                     .build();
             

@@ -30,7 +30,7 @@ public class GenderDto implements Serializable {
                                     .build();
     }
     
-    public GenderModel converToEntity() {
+    public GenderModel converToEntity(GenderDto gender) {
         return GenderModel.builder().idGender(this.idGender)
                                     .nombre(this.nombre)
                                     .imagen(this.imagen)

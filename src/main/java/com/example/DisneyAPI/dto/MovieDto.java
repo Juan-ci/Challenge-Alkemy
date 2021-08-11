@@ -1,6 +1,7 @@
 package com.example.DisneyAPI.dto;
 
 import com.example.DisneyAPI.models.CharacterModel;
+import com.example.DisneyAPI.models.GenderModel;
 import com.example.DisneyAPI.models.MovieModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
@@ -31,6 +32,8 @@ public class MovieDto implements Serializable {
     private Long calificacion;
     
     private List<CharacterModel> personajesAsociados;
+    
+    private GenderModel genero;
     
     public static MovieDto converToDto(MovieModel entity) {
         return MovieDto.builder()
