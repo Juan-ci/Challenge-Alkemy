@@ -1,8 +1,11 @@
 package com.example.DisneyAPI.dto;
 
+import com.example.DisneyAPI.models.CharacterModel;
 import com.example.DisneyAPI.models.MovieModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,11 +26,11 @@ public class MovieDto implements Serializable {
     
     private String titulo;
     
-    private String fechaCreacion;
+    private Date fechaCreacion;
     
     private Long calificacion;
     
-    //private List<CharacterModel> personajesAsociados;
+    private List<CharacterModel> personajesAsociados;
     
     public static MovieDto converToDto(MovieModel entity) {
         return MovieDto.builder()

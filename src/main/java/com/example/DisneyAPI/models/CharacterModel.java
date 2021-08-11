@@ -38,7 +38,7 @@ public class CharacterModel implements Serializable {
     @Column
     private String historia;
     
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "character_movie",
      joinColumns = @JoinColumn(name = "idCharacter"),
      inverseJoinColumns = @JoinColumn(name = "idMovie"))

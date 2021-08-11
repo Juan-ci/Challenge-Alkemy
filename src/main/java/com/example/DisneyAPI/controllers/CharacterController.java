@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,15 +26,15 @@ public class CharacterController {
     
     @GetMapping()
     public List<CharacterDto> getCharacter(
+    @RequestParam(value = "idcharacter",required = false) Optional<Long> idCharacter,
     @RequestParam(value = "name",required = false) Optional<String> nombre,
-    @RequestParam(value = "edad",required = false) Optional<Long> edad,
-    @RequestParam(value = "idcharacter",required = false) Optional<Long> idCharacter
+    @RequestParam(value = "edad",required = false) Optional<Long> edad
     ){
         Map< String, Object > filterBy = new HashMap<>();
         
+        idCharacter.ifPresent( idcharacter -> filterBy.put("idcharacter", idcharacter));
         nombre.ifPresent( name -> filterBy.put("nombreCharacter", name));
         edad.ifPresent( age -> filterBy.put("age", age));
-        idCharacter.ifPresent( idcharacter -> filterBy.put("idcharacter", idcharacter));
         //System.out.println(filterBy); Todos los valores en el map
         return characterService.getCharacters(filterBy);
     }
@@ -42,12 +43,6 @@ public class CharacterController {
     public CharacterDto getCharacterById(@PathVariable Long id){
         return characterService.getCharacter(id);
     }
-    /*
-    @GetMapping()
-    public List<CharacterDto> getCharacter(){
-        return characterService.getCharacters();
-    }
-    */
     
     @PostMapping()
     public CharacterDto guardarPersonaje(@RequestBody CharacterDto character){
@@ -63,5 +58,10 @@ public class CharacterController {
         } else {
             return "No pudo eliminar el personaje con "+ id;
         }
+    }
+    
+    @PutMapping(path = "/{id}")
+    public CharacterDto updateCharacter(@PathVariable Long id, @RequestBody CharacterDto character){
+        return this.characterService.updateCharacter(id, character);
     }
 }

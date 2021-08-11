@@ -1,13 +1,17 @@
 package com.example.DisneyAPI.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sun.istack.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Entity
@@ -31,9 +35,11 @@ public class MovieModel implements Serializable {
     @Column
     private String titulo;
     
-    //Modificar a tipo Date para facilitar ordenado desde BD
     @Column
-    private String fechaCreacion;
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date fechaCreacion;
     
     @Column
     private Long calificacion;

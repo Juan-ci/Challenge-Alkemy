@@ -16,6 +16,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -52,10 +53,6 @@ public class UserService {
         userDevuelto = userRepository.saveAndFlush(user.convertToEntity());
         
         mailService.sendRegistrationEmail(user);
-        /* -->Este código ya estaría funcionando, seteando el mail y apiKey en el .properties
-            POR EL MOMENTO ESTÁ COMENTADO, YA QUE TENGO PROBLEMAS EN LA DOBLE AUTENTICACION
-            QUE PIDE SENDGRID
-        */
 
         user.setIdUser(userDevuelto.getIdUser());
         user.setMail(null);
@@ -69,7 +66,6 @@ public class UserService {
 
         if (passwordEncoder.matches(credentials.getPassword(), userBD.getPassword())) {
             String token = this.getJWTToken(credentials.getUserName());
-            System.out.println("¡¡¡TOKEN OBTENIDO!!!");
             userBD = UserDto.setTokenEntity(token);
             userRepository.saveAndFlush(userBD);
             return token;
@@ -107,5 +103,40 @@ public class UserService {
                         secretKey.getBytes()).compact();
 
         return "Bearer " + token;
+    }
+    
+    @Transactional
+    public UserDto updateUser(Long id, UserDto user) {
+        UserModel userBD;
+        try {
+            userBD = userRepository.getById(id);
+            
+            System.out.println("paso por try UPDATE");
+            System.out.println(userBD); //<-- Si comento esta línea al ingresar un id que no existe, da error y no toma el catch
+
+            user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+            
+            userBD = UserModel.builder()
+                    .idUser(id)
+                    .name(user.getName())
+                    .lastName(user.getLastName())
+                    .userName(user.getUserName())
+                    .mail(user.getMail())
+                    .password(user.getPassword())
+                    .role(user.getRole())
+                    .token(user.getToken())
+                    .build();
+            
+            userBD = userRepository.saveAndFlush(userBD);
+            
+            System.out.println("PASE POR ACA");
+
+        } catch (EntityNotFoundException e) {
+            user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+            userBD = userRepository.saveAndFlush(user.convertToEntity());
+            System.out.println("PASE POR CATCH");
+        }
+
+        return UserDto.convertToDto(userBD);
     }
 }
