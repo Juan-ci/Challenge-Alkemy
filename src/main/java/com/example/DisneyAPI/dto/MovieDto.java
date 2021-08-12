@@ -52,4 +52,12 @@ public class MovieDto implements Serializable {
                                     .calificacion(this.calificacion)
                                     .build();
     }
+    
+    public static MovieDto getFiltered(MovieModel entity){
+        return MovieDto.builder()
+                        .imagen(entity.getImagen())
+                        .titulo(entity.getTitulo())
+                        .fechaCreacion(entity.getFechaCreacion())
+                        .build();
+    }
 }

@@ -8,7 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.DisneyAPI.Repository.IMovieRepository;
 import com.example.DisneyAPI.dto.MovieDto;
 import java.util.List;
+import java.util.Map;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 @Service
 public class MovieService {
@@ -16,6 +24,61 @@ public class MovieService {
     @Autowired
     IMovieRepository movieRepository;
 
+    @PersistenceContext
+    EntityManager entityManager;
+
+    @Transactional(readOnly = true)
+    public List<MovieDto> getMovies(Map< String, Object> filterBy) {
+        List<MovieModel> movieBD;
+        movieBD = new ArrayList();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery criteriaQuery = criteriaBuilder.createQuery();
+        Root<MovieModel> movie = criteriaQuery.from(MovieModel.class);
+        
+        //Probando orders
+        List<Order> orderList = new ArrayList();
+
+        //Constructing list of parameters
+        List<Predicate> predicates;
+        predicates = new ArrayList();
+        
+        if(filterBy.containsKey("order")){
+            //predicates.add(criteriaBuilder.equal(movie.get("fechaCreacion"),filterBy.get("order")));
+            if("ASC".equals(filterBy.get("order"))){
+                System.out.println("ORDEN ASCENDENTE");
+                orderList.add(criteriaBuilder.asc(movie.get("fechaCreacion")));
+            } else {
+                orderList.add(criteriaBuilder.desc(movie.get("fechaCreacion")));
+            }
+        }
+
+        if (filterBy.containsKey("nombreMovie")) {
+            predicates.add(criteriaBuilder.equal(movie.get("titulo"), filterBy.get("nombreMovie")));
+        }
+
+        if (filterBy.containsKey("genre")) {
+            predicates.add(criteriaBuilder.equal(movie.get("genero"), filterBy.get("genre")));
+        }
+
+        System.out.println("PREDICATES" + predicates);
+
+        criteriaQuery.select(movie)
+                .where(predicates.toArray(new Predicate[]{}))
+                .orderBy(orderList);
+
+        movieBD = entityManager.createQuery(criteriaQuery).getResultList();
+
+        List<MovieDto> movieDto = new ArrayList();
+
+        movieBD.forEach(movieEnt -> {
+            movieDto.add(MovieDto.getFiltered(movieEnt));
+        });
+
+        return movieDto;
+    }
+
+    /*
     @Transactional(readOnly = true)
     public List<MovieDto> getMovie() {
         List<MovieDto> moviesDto = new ArrayList();
@@ -24,10 +87,15 @@ public class MovieService {
         movieBD.forEach(movieModel -> {
             moviesDto.add(MovieDto.converToDto(movieModel));
         });
+        
+        moviesDto.forEach(item -> {
+            item.setIdMovie(null);
+            item.setCalificacion(null);
+        });
 
         return moviesDto;
     }
-
+     */
     @Transactional
     public MovieDto saveMovie(MovieDto movieDto) {
         MovieModel movieBD = movieDto.converToEntity(movieDto);
@@ -66,9 +134,9 @@ public class MovieService {
                     .genero(movie.getGenero())
                     //.personajesAsociados(movie.getPersonajesAsociados())
                     .build();
-            
+
             movieBD = movieRepository.saveAndFlush(movieBD);
-            
+
             System.out.println("PASE POR ACA");
 
         } catch (EntityNotFoundException e) {
