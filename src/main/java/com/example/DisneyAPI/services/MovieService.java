@@ -44,7 +44,6 @@ public class MovieService {
         predicates = new ArrayList();
         
         if(filterBy.containsKey("order")){
-            //predicates.add(criteriaBuilder.equal(movie.get("fechaCreacion"),filterBy.get("order")));
             if("ASC".equals(filterBy.get("order"))){
                 System.out.println("ORDEN ASCENDENTE");
                 orderList.add(criteriaBuilder.asc(movie.get("fechaCreacion")));
@@ -78,24 +77,6 @@ public class MovieService {
         return movieDto;
     }
 
-    /*
-    @Transactional(readOnly = true)
-    public List<MovieDto> getMovie() {
-        List<MovieDto> moviesDto = new ArrayList();
-        List<MovieModel> movieBD = this.movieRepository.findAll();
-
-        movieBD.forEach(movieModel -> {
-            moviesDto.add(MovieDto.converToDto(movieModel));
-        });
-        
-        moviesDto.forEach(item -> {
-            item.setIdMovie(null);
-            item.setCalificacion(null);
-        });
-
-        return moviesDto;
-    }
-     */
     @Transactional
     public MovieDto saveMovie(MovieDto movieDto) {
         MovieModel movieBD = movieDto.converToEntity(movieDto);

@@ -18,7 +18,8 @@ public class GenderService {
 
     @Transactional
     public GenderDto saveGender(GenderDto gender) {
-        GenderModel genderEntity = this.genderRepository.save(gender.converToEntity(gender));
+        GenderModel genderEntity = this.genderRepository.save(gender.converToEntity());
+        //GenderModel genderEntity = this.genderRepository.save(gender.converToEntity(gender));
         gender.setIdGender(genderEntity.getIdGender());
         return gender;
     }
@@ -65,7 +66,8 @@ public class GenderService {
             System.out.println("PASE POR ACA");
 
         } catch (EntityNotFoundException e) {
-            genderBD = genderRepository.saveAndFlush(gender.converToEntity(gender));
+            genderBD = genderRepository.saveAndFlush(gender.converToEntity());
+            //genderBD = genderRepository.saveAndFlush(gender.converToEntity(gender));
             System.out.println("PASE POR CATCH Gender");
         }
 

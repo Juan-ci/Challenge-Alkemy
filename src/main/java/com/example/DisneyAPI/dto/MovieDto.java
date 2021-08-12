@@ -50,7 +50,12 @@ public class MovieDto implements Serializable {
                                     .titulo(this.titulo)
                                     .fechaCreacion(this.fechaCreacion)
                                     .calificacion(this.calificacion)
+                                    .genero(this.genero)
                                     .build();
+    }
+    
+    public GenderDto getGeneroEntity(GenderModel generoDto){
+        return GenderDto.converToDto(generoDto);
     }
     
     public static MovieDto getFiltered(MovieModel entity){
