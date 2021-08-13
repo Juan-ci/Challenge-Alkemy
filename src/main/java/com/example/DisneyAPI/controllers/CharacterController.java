@@ -35,13 +35,13 @@ public class CharacterController {
         idCharacter.ifPresent( idcharacter -> filterBy.put("idcharacter", idcharacter));
         nombre.ifPresent( name -> filterBy.put("nombreCharacter", name));
         edad.ifPresent( age -> filterBy.put("age", age));
-        //System.out.println(filterBy); Todos los valores en el map
-        return characterService.getCharacters(filterBy);
+        return this.characterService.getCharacters(filterBy);
     }
     
+    //CharacterWithDetails
     @GetMapping(path = "/{id}")
     public CharacterDto getCharacterById(@PathVariable Long id){
-        return characterService.getCharacter(id);
+        return this.characterService.getCharacter(id);
     }
     
     @PostMapping()

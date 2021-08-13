@@ -30,7 +30,7 @@ public class MovieController {
     @RequestParam(value = "genre",required = false) Optional<Long> idGenero,
     @RequestParam(value = "order",required = false) Optional<String> order
     ){
-        Map< String, Object > filterBy = new HashMap< String, Object>();
+        Map< String, Object > filterBy = new HashMap<String, Object>();
         
         nombre.ifPresent( name -> filterBy.put("nombreMovie", name));
         idGenero.ifPresent( idgenero -> filterBy.put("idgenero", idgenero));
@@ -38,12 +38,7 @@ public class MovieController {
         //System.out.println(filterBy); Todos los valores en el map
         return movieService.getMovies(filterBy);
     }
-    /*
-    @GetMapping()
-    public List<MovieDto> obtenerPeliculaSeries(){
-        return this.movieService.getMovie();
-    }
-    */
+    
     @PostMapping()
     public MovieDto guardarPeliculaSerie(@RequestBody MovieDto movie){
         return this.movieService.saveMovie(movie);

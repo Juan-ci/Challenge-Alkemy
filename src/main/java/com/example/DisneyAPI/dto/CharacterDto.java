@@ -50,9 +50,29 @@ public class CharacterDto implements Serializable {
                 .nombre(entity.getNombre())
                 .edad(entity.getEdad())
                 .peso(entity.getPeso())
-                .historia(entity.getHistoria())
-                .peliculasAsociadas(entity.getPeliculasAsociadas()).build();
+                .historia(entity.getHistoria()).build();
     }
+
+    /*
+    public static CharacterDto getCharacterDetails(CharacterModel entity) {
+        System.out.println("ESTOY EN DETAILS");
+        CharacterDto characterDto = convertToDto(entity);
+        System.out.println("CHARACTERDTO "+characterDto);
+        characterDto.setPeliculasAsociadas(getPeliculas(entity.getPeliculasAsociadas()));
+        //characterDto.setPeliculasAsociadas(entity.getPeliculasAsociadas());
+        return characterDto;
+    }
+
+    private static List<MovieModel> getPeliculas(List<MovieModel> movies) {
+        System.out.println("ESTOY EN GETPELICULAS");
+        return movies.stream().map(movie -> MovieModel.builder()
+                .idMovie(movie.getIdMovie())
+                .titulo(movie.getTitulo())
+                .imagen(movie.getImagen())
+                .fechaCreacion(movie.getFechaCreacion())
+                .build()).toList();
+    }
+    */
 
     public static CharacterDto getImagenNombre(CharacterModel entity) {
         return CharacterDto.builder()
@@ -69,14 +89,4 @@ public class CharacterDto implements Serializable {
                 .historia(entity.getHistoria())
                 .build();
     }
-    /*
-    public static CharacterDto getCharacterDetails(CharacterModel entity){
-        CharacterDto characterDto = getCharacter(entity);
-        System.out.println(entity.getPeliculasAsociadas());
-        characterDto.setPeliculasAsociadas(entity.getPeliculasAsociadas());
-        //characterDto.setPeliculasAsociadas(getMovies(entity.getPeliculasAsociadas()));
-        
-        return characterDto;
-    }
-     */
 }

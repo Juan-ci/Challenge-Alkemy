@@ -26,6 +26,7 @@ public class CharacterService {
     @PersistenceContext
     EntityManager entityManager;
 
+    //Get characters with filters
     @Transactional(readOnly = true)
     public List<CharacterDto> getCharacters(Map< String, Object> filterBy) {
         List<CharacterModel> characterBD;
@@ -80,15 +81,22 @@ public class CharacterService {
         }
     }
 
+    //Character with details
     @Transactional(readOnly = true)
     public CharacterDto getCharacter(Long idCharacter) {
-
         CharacterModel characterBD;
-        characterBD = characterRepository.getById(idCharacter);
+        CharacterDto characterDto = null;
 
-        CharacterDto characterDto;
-        //characterDto = CharacterDto.getCharacterDetails(characterBD);
-        characterDto = CharacterDto.getCharacter(characterBD);
+        try {
+            System.out.println("ID: "+ idCharacter);
+            characterBD = characterRepository.getById(idCharacter);
+
+            //characterDto = CharacterDto.getCharacterDetails(characterBD);
+            characterDto = CharacterDto.convertToDto(characterBD);
+        } catch (EntityNotFoundException e) {
+            System.out.println("Id no existente");
+            e.getMessage();
+        }
         return characterDto;
     }
 
@@ -114,27 +122,27 @@ public class CharacterService {
     public CharacterDto updateCharacter(Long id, CharacterDto character) {
         CharacterModel characterBD;
         try {
-             characterBD = characterRepository.getById(id);
-             
-             characterBD = CharacterModel.builder()
-                .idCharacter(id)
-                .imagen(character.getImagen())
-                .nombre(character.getNombre())
-                .edad(character.getEdad())
-                .peso(character.getPeso())
-                .historia(character.getHistoria())
-                .peliculasAsociadas(character.getPeliculasAsociadas())
-                .build();
-             
-             characterBD = characterRepository.saveAndFlush(characterBD);
-             
-             System.out.println("PASE POR ACA");
-        
+            characterBD = characterRepository.getById(id);
+
+            characterBD = CharacterModel.builder()
+                    .idCharacter(id)
+                    .imagen(character.getImagen())
+                    .nombre(character.getNombre())
+                    .edad(character.getEdad())
+                    .peso(character.getPeso())
+                    .historia(character.getHistoria())
+                    .peliculasAsociadas(character.getPeliculasAsociadas())
+                    .build();
+
+            characterBD = characterRepository.saveAndFlush(characterBD);
+
+            System.out.println("PASE POR ACA");
+
         } catch (EntityNotFoundException e) {
-             characterBD = characterRepository.saveAndFlush(character.convertToEntity());
-             System.out.println("PASE POR CATCH");
+            characterBD = characterRepository.saveAndFlush(character.convertToEntity());
+            System.out.println("PASE POR CATCH");
         }
-        
+
         return CharacterDto.convertToDto(characterBD);
     }
 }
