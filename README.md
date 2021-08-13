@@ -2,17 +2,22 @@
  DisneyAPI
  
  FUNCIONANDO:
+ (Consignas del challenge 1,2,3,4,6,7,9,10)
  Entities en funcionamiento.
  Dto relacionada a cada entity.
- *Registro de usuario nuevo en funcionamiento
- *login en funcionamiento
- *Token(se asigna correctamente al hacer login, falta obtener autorizacion una vez logueado)
- Serices, Repositories, Controllers
- Listado de personajes sólo con nombre e imagen(mejorable con criteriaQuery)
+ Registro de usuario nuevo en funcionamiento
+ login en funcionamiento
+ Envío de mail por registro(entra como Spam)
+ Token(expiración de token desactivada para facilitar pruebas)
+ Services, Repositories, Controllers
+ Listado de personajes sólo con nombre e imagen
  Uso base de datos MySql
- Security
+ Spring Security
+ Uso BcryptEncoder
+ Operaciones CRUD
+ Búsqueda con filtro de personajes
  
  FALTA:
- Comparación de password ingresado por Postman con el password encryptado guardado en base de datos.
- Uso de SendGrid(código listo para probar, tengo problemas con la two-factor authentication de SendGrid, estoy con contacto con soporte de la API)
- Búsquedas en base de datos(CriteriaQuery)
+ (Consignas del challenge 5, 8)
+ Detalle Personaje(Faltó la devolución de peliculas asociadas)
+ 
